@@ -29,15 +29,12 @@ RUN a2enmod rewrite expires
 
 VOLUME /var/www/html
 
-ENV WORDPRESS_VERSION 4.7.3
-ENV WORDPRESS_SHA1 35adcd8162eae00d5bc37f35344fdc06b22ffc98
-
 RUN set -ex; \
-	curl -o wordpress.tar.gz -fSL "https://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz"; \
-	echo "$WORDPRESS_SHA1 *wordpress.tar.gz" | sha1sum -c -; \
+	curl -o wordpress.tar.gz -fSL "https://wordpress.org/latest.tar.gz"; \
 # upstream tarballs include ./wordpress/ so this gives us /usr/src/wordpress
 	tar -xzf wordpress.tar.gz -C /usr/src/; \
 	rm wordpress.tar.gz; \
+	mkdir -p /usr/src/wordpress/wp-content/plugins/plugin-scaffold; \
 	chown -R www-data:www-data /usr/src/wordpress
 
 COPY docker-entrypoint.sh /usr/local/bin/
